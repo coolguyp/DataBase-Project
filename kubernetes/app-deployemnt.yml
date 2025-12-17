@@ -1,1 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-bigdata
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-bigdata
+  template:
+    metadata:
+      labels:
+        app: flask-bigdata
+    spec:
+      containers:
+      - name: flask
+        image: pranam2835/flask-bigdata:latest
+        env:
+        - name: MONGO_URI
+          value: mongodb://mongo:27017
+        ports:
+        - containerPort: 5000
 
