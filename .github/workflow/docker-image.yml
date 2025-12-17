@@ -1,1 +1,25 @@
+name: Full CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-push-deploy:
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - run: docker build -t pranam2835/flask-bigdata:latest .
+    - run: docker push pranam2835/flask-bigdata:latest
+
+    - run: |
+        kubectl apply -f kubernetes/
+        kubectl rollout status deployment/flask-bigdata
 
